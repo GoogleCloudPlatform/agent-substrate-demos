@@ -4,10 +4,23 @@ Reference architectures, interactive showcases, and end-to-end sample applicatio
 
 For the structured, step-by-step hands-on learning curriculum, see the companion [**Agent Substrate Workshop (`GoogleCloudPlatform/agent-substrate-workshop`)**](https://github.com/GoogleCloudPlatform/agent-substrate-workshop).
 
+## How Demos Work in This Repository
+
+Every demo lives in its own self-contained `<demo-slug>/` directory with zero cross-demo dependencies and exposes the same `Makefile` commands (whether implemented with shell scripts or Terraform under the hood), supporting two symmetric workflows:
+
+| Workflow | Install | Run & Verify | Uninstall |
+|---|---|---|---|
+| **Existing Cluster** *(Agent Substrate pre-installed)* | `make check-prereqs && make deploy` | `make demo` / `make verify-live` | `make teardown` *(removes only the demo; leaves `ate-system` untouched)* |
+| **Clean From Scratch** *(Empty Google Cloud project)* | `make cluster-up && make deploy` | `make demo` / `make verify-live` | `make cluster-down` *(deletes the dedicated cluster with zero leaked spend)* |
+
 ## Prerequisites
 
-- A Google Cloud project with billing enabled and a **GKE 1.37+** cluster configured with Workload Identity Federation for GKE, gVisor node pools (or Compute Engine C3 nested-virtualization nodes for MicroVM tracks), Cloud Storage, and Artifact Registry.
-- Local tools: `gcloud`, `kubectl`, `kubectl-ate`, `go` 1.26+, `ko`, `jq`, and `git`.
+- A Google Cloud project with billing enabled and (for the Existing Cluster track) a **GKE 1.37+** cluster configured with Workload Identity Federation for GKE, gVisor node pools (or Compute Engine C3 nested-virtualization nodes for MicroVM tracks), Cloud Storage, and Artifact Registry.
+- Common CLI tools: `gcloud`, `kubectl`, `kubectl-ate`, `go` 1.26+, `jq`, `git`, and `ko` or `terraform` (as noted in each demo's Quick-Facts table).
+
+## Contributing a Demo
+
+See [CONTRIBUTING.md](CONTRIBUTING.md) and [AGENTS.md](AGENTS.md) for the demo admission bar, `./hack/scaffold-demo.sh` starter generator, and repository quality checks (`./hack/check-hygiene.sh`).
 
 ## License and Disclaimers
 
